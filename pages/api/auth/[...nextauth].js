@@ -1,0 +1,17 @@
+import NextAuth from "next-auth/next"
+import  GoogleProvider from "next-auth/providers/google"
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
+import clientPromise from "../../../lib/monggodb"
+
+export default NextAuth({
+  // Configure one or more authentication providers
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+    }),
+    // ...add more providers here
+  ],
+  secret: process.env.JWT_SECRET,
+  adapter: MongoDBAdapter(clientPromise)
+})
