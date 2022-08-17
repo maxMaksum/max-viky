@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const customerSchema = new mongoose.Schema(
   {
-  
+    _id:{ type: Schema.Types.ObjectId, auto:true},
     rm: { type: String, required: true},
     nama: { type: String, required: false },
     namakk: { type: String, required: false},

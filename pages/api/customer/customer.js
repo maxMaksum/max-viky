@@ -1,9 +1,9 @@
-import Customer from "../../../model/RM"
-import db from "../../../lib/db"
-import mongoose from "mongoose"
+import Cusomer from "../../../model/RM"
+import connectDB from "../../../lib/db"
+import mongoose, { Schema, Types } from "mongoose"
 import { getSession } from 'next-auth/react';
 
-
+connectDB()
 const handler = async (req, res) => {
     const session = await getSession({ req });
     if (!session) {
@@ -13,46 +13,96 @@ const handler = async (req, res) => {
     if (req.method === 'GET') {
       return getHandler(req, res);
     } 
+    if (req.method === 'PUT') {
+      return putHandler(req, res);
+    } 
+    if (req.method === 'POST') {
+      return postHandler(req, res);
+    } 
   };
 
 const getHandler = async (req, res) => {
-    await db.connect();
+ 
     const LIMIT = 20
-    const products = await Customer.find({})
+    const products = await Cusomer.find({})
     .sort({rm: 1}) // -1 for descending sort
     .limit(LIMIT);
     
-    await db.disconnect();
+    // await db.disconnect();
     res.send(products);
   };
   export default handler;
 
-// export default async (req, res) => {
-//   // console.log(req.method)
-//   if (req.method === "GET") {
-//     const { page } = req.query
+const postHandler = async (req, res) => {
 
-//     // console.log(page)
+  const {rm, nama, namakk, alamat} = req.body
 
-//     try {
-//       const LIMIT = 6
-//       const startIndex = (Number(page) - 1) * LIMIT
-//       // console.log(startIndex)
+  let namare = new RegExp("^"+ nama );
+  let namakkre = new RegExp(namakk);
+  let rmre = new RegExp("^"+ rm);
+  let alamatre = new RegExp("^"+ alamat);
 
-//       const total = await Post.countDocuments({})
+  console.log(nama)
+ 
 
-//       // console.log(total)
+    const LIMIT = 5
 
-//       const posts = await Post.find()
-//         .sort({ _id: 1 })
-//         .limit(LIMIT)
-//         .skip(startIndex)
+    if(nama){
+      const products = await Cusomer.find(
+        {nama : { $regex: namare, $options: 'i' }
+      })
+      .limit(LIMIT)
+      .sort({rm: 1}) // -1 for descending sort
+      console.log(products)
+      // await db.disconnect()
+      res.status(200).json({ products})}
 
-//       //   console.log(posts)
+      if(rmre){
+        const products = await Cusomer.find(
+          {rm : { $regex: rmre, $options: 'i' }
+          // {nama : { $regex: namare, $options: 'i' }},
+          // {namakk : { $regex: namakkre, $options: 'i' }},
+          // {alamat : { $regex: alamatre, $options: 'i' }}
+        })
+        .limit(LIMIT)
+        .sort({rm: 1}) // -1 for descending sort
+        console.log(products)
+        // await db.disconnect()
+        res.status(200).json({ products})}
+      
+        if(namakk){
+          const products = await Cusomer.find(
+            {namakk : { $regex: namakkre, $options: 'i' }
+            // {nama : { $regex: namare, $options: 'i' }},
+            // {namakk : { $regex: namakkre, $options: 'i' }},
+            // {alamat : { $regex: alamatre, $options: 'i' }}
+          })
+          .limit(LIMIT)
+          .sort({rm: 1}) // -1 for descending sort
+          console.log(products)
+          // await db.disconnect()
+          res.status(200).json({ products})}
+  };
+  
+  const putHandler = async (req, res)=>{
+    const {rm, nama, namakk, alamat, rt, rw} = req.body
+    console.log(rm)
 
-//       res.json({ data: posts, count: Math.ceil(total / LIMIT) })
-//     } catch (error) {
-//       console.log(error)
-//     }
-//   }
-// }
+    const newProduct = new Cusomer(
+      {
+        _id: new Types.ObjectId(), 
+        rm: rm, 
+        nama: nama,
+        namakk: namakk ,    
+        alamat: alamat,
+        rt:rt ,    
+        rw: rw,    }
+      
+      )
+    const product = await newProduct.save()
+    console.log(product)
+   
+  
+    res.status(200).json({ MESSAGE:"SUKSES", product:product})
+  }
+  

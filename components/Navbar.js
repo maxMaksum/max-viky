@@ -15,7 +15,7 @@ function Navbar() {
                   
                     
                 </div>
-                <Form/>
+             
 
                 <div className='flex'>
                     <div>Dalam Wilayah</div>

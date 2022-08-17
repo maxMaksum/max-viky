@@ -1,35 +1,57 @@
 import styles from '../styles/Home.module.css'
-import {useState} from 'react'
+import {useContext, useState} from 'react'
+import { DataContext } from './contex/myContext';
 
 
 function Form() {
 
-    const [rm, setRm] = useState("")
-    const [nama, setNama] = useState("")
-    const [namakk, setNamaKK] = useState("")
-    const [alamat, setAlamat] = useState("")
-    const [rt, setRt] = useState("")
-    const [rw, setRw] = useState("")
-    const [dataC, setDataC] = useState({})
+    const {dataRe, setDataRe} = useContext(DataContext);
+  
 
     const [showSearch, setShowSearch] = useState(true)
+    const [data, setData] = useState({
+        rm:"",
+        nama:"",
+        namakk:"",
+        alamat:"",
 
-    console.log(alamat)
-
+    })
+  
     const submit = async (e) => {
         e.preventDefault()
-        setDataC({
-            rm: rm,
-            nama: nama,
-            namakk:namakk,
-            alamat: alamat,
-            rt: rt,
-            rw: rw
-        })
+        await fetchData(data)
+        clearData()
+    
+     }
+   
+    console.log(data)
 
-
+    const clearData = ()=>{
+       setData({
+        rm:"",
+        nama:"",
+        namakk:"",
+        alamat:"",
+       })
     }
-    console.log(dataC)
+    const fetchData = async (x)=>{
+        try {
+        const response = await fetch('/api/customer/customer', {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(x)
+            })
+        const data =  await response.json()
+               
+        setDataRe(data)
+
+    }catch(error) {
+        // enter your logic for when there is an error (ex. error toast)
+              console.log(error)
+     } 
+}
 
     let option = [
       {value : 'SODITAN', label: 'SODITAN'},
@@ -57,8 +79,8 @@ function Form() {
                         className ="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-500 rounded-md" 
                         placeholder="RM"
                         type='text'
-                        value={rm}
-                        onChange ={(e)=>setRm(e.target.value)}
+                        value={data.rm}
+                        onChange ={(e)=>setData({...data, rm:e.target.value})}
                         
                         
                         />
@@ -75,57 +97,43 @@ function Form() {
                 <div className={
                     showSearch ? 'hidden' : 'block space-y-4 text-black absolute top-10'
                 }>
-                    <div className='mt-2 '>
-                       
-                        <div className="flex items-center">
-                            <label htmlFor ="desa" className="sr-only">DESA</label>
-                            <select 
-                            id="desa"
-                             name="desa" 
-
-                             type='text'
-                             value={alamat}
-                             onChange ={(e)=>setAlamat(e.target.value)}
-
-                             className="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-white text-gray-500 sm:text-sm rounded-md">
-                            {option.map((x , i)=>(
-                              <option key={i} value={x.value}>{x.label}</option>)
-                            )} 
-                            </select>
-                        </div>
-                    </div>
+              
                     <div className="mt-1 relative rounded-md shadow-sm">
                         <input 
                         type='text'
-                        value={nama}
-                        onChange ={(e)=>setNama(e.target.value)}
+                        value={data.nama}
+                        onChange ={(e)=>setData({...data, nama:e.target.value})}
                          className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
                           placeholder="NAMA"/>
                     </div>
                     <div className="mt-1 relative rounded-md shadow-sm">
                         <input 
                         type='text'
-                        value={namakk}
-                        onChange ={(e)=>setNamaKK(e.target.value)}
+                        value={data.namakk}
+                        onChange ={(e)=>setData({...data, namakk:e.target.value})}
                          className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
                           placeholder="NAMA KK"/>
                     </div>
-                    <div className="mt-1 relative rounded-md shadow-sm">
-                        <input 
-                        type='text'
-                        value={rt}
-                        onChange ={(e)=>setRt(e.target.value)}
-                        
-                        className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md" placeholder="RT"/>
-                    </div>
-                    <div className="mt-1 relative rounded-md shadow-sm">
-                        <input 
-                        type='text'
-                        value={rw}
-                        onChange ={(e)=>setRw(e.target.value)}
-                        className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md" placeholder="RW"/>
-                    </div>
 
+                    <div className='mt-2 '>
+                       
+                       <div className="flex items-center">
+                           <label htmlFor ="desa" className="sr-only">ALAMAT</label>
+                           <select 
+                           id="desa"
+                            name="desa" 
+
+                            type='text'
+                            value={data.alamat}
+                            onChange ={(e)=>setData({...data, alamat:e.target.value})}
+
+                            className="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-white text-gray-500 sm:text-sm rounded-md">
+                           {option.map((x , i)=>(
+                             <option key={i} value={x.value}> {x.label}</option>)
+                           )} 
+                           </select>
+                       </div>
+                   </div>
                 </div>
             </div>
         </div>
