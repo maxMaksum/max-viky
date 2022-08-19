@@ -63,7 +63,7 @@ const deleteHandler = async (req, res) => {
   if (product) {
     await product.remove();
   
-    res.send({ message: 'Product deleted successfully' });
+    res.send({ message: 'Product deleted successfully'});
   }
    else {
    

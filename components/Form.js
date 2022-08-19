@@ -1,13 +1,17 @@
 import styles from '../styles/Home.module.css'
-import {useContext, useState} from 'react'
-import { DataContext } from './contex/myContext';
+import { Store } from "../components/contex/myContext"
+import { useContext, useEffect, useState } from 'react'
+import Table from './Table';
+import { useRouter } from 'next/router';
 
 
 function Form() {
 
-    const {dataRe, setDataRe} = useContext(DataContext);
-  
+    const { addUsers, readUsers, users, setUsers } = useContext(Store);
 
+    const router = useRouter()
+
+    // console.log(users)
     const [showSearch, setShowSearch] = useState(true)
     const [data, setData] = useState({
         rm:"",
@@ -18,14 +22,24 @@ function Form() {
     })
   
     const submit = async (e) => {
-        e.preventDefault()
-        await fetchData(data)
-        clearData()
+
+        // console.log(data)
+
+    
+         const res = await fetchData(data)
+         
+         console.log(res.products)
+         setUsers(res.products)
+
+       
+        //  console.log(users)
+         
+      
+         
+       
     
      }
    
-    console.log(data)
-
     const clearData = ()=>{
        setData({
         rm:"",
@@ -34,6 +48,7 @@ function Form() {
         alamat:"",
        })
     }
+
     const fetchData = async (x)=>{
         try {
         const response = await fetch('/api/customer/customer', {
@@ -44,12 +59,14 @@ function Form() {
                 body: JSON.stringify(x)
             })
         const data =  await response.json()
-               
-        setDataRe(data)
 
-    }catch(error) {
-        // enter your logic for when there is an error (ex. error toast)
-              console.log(error)
+       
+     
+        return data
+
+    }
+    catch(error) {
+      console.log(error)
      } 
 }
 
@@ -63,7 +80,7 @@ function Form() {
     
     ]
     return (
-        <div className='flex justify-center items-start'>
+        <div className='flex flex-col justify-center items-start'>
             <div className='flex flex-col items-center mb-2 py-2 relative'>
                 <div className='flex items-center justify-start space-x-2'>
                     <div className='flex items-center justify-center bg-gray-500 rounded'>
@@ -136,6 +153,7 @@ function Form() {
                    </div>
                 </div>
             </div>
+            <Table/>
         </div>
 
     )

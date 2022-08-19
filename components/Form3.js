@@ -1,10 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react'
 import Table from './Table';
+import { Store } from "../components/contex/myContext"
 
 function Form3({setShowForm}) {
 
-  const [customers, setCustomers] = useState([])
- 
+  const { addUsers } = useContext(Store);
+
   const [dataQ, setDataQ] = useState({
     rm:"",
     nama:"",
@@ -14,6 +15,7 @@ function Form3({setShowForm}) {
     rw:""
 
 })
+
 
     async function putData(url = '', data = {}) {
      
@@ -33,33 +35,21 @@ function Form3({setShowForm}) {
         return response.json(); // parses JSON response into native JavaScript objects
       }
       
-   
-  
-
-
-  
-
 
     const submit = async (e) => {
         e.preventDefault()
         const response = await putData('/api/customer/customer', dataQ)
           
         const {product, MESSEGE} = response
+        console.log(response)
 
-      
         if(response){
-          await setCustomers([...customers, product])
-          console.log(customers)
-          alert(MESSEGE)
-        }
-      
+          e.preventDefault();
+          addUsers(product);
         
-        // clearData()
+        } 
 
       
-      // const res2 =  await postData('/api/id/'+ data1._id, data)
-      
-    
      }
    
 
@@ -177,7 +167,7 @@ function Form3({setShowForm}) {
                     >Delete
                     </button>
                 </div>
-                <Table customers={customers}/>
+                <Table/>
              
             </div>
        
