@@ -5,22 +5,22 @@ import connectDB from '../../lib/db'
 import Cusomer from '../../model/RM'
 import mongoose from 'mongoose'
 import Form2 from "../../components/Form2"
+import Headers from '../../components/Headers'
 
 function detailPage({data}) {
     const router = useRouter()
     const {data: session, status} = useSession()
-
-    console.log(data)
-
     if(!router.isReady){
       return <>..Loading</>}
    
     if (status === "authenticated" && router.isReady) {
         return (
-          <div className="flex flex-col items-center justify-center">
-            
-            <Form2 data1 ={data}/>
-          
+          <div className=''>
+            <Headers />
+
+             <div className="flex flex-col items-center justify-center">
+              <Form2 data1 ={data}/>
+              </div>
             </div>
         )
     } else {

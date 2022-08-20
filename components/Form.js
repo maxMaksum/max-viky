@@ -1,10 +1,8 @@
-import styles from '../styles/Home.module.css'
 import { Store } from "../components/contex/myContext"
 import { useContext, useEffect, useState } from 'react'
-import Table from './Table';
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useRouter } from 'next/router';
-
-
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 function Form() {
 
     const { addUsers, readUsers, users, setUsers } = useContext(Store);
@@ -33,11 +31,7 @@ function Form() {
 
        
         //  console.log(users)
-         
-      
-         
-       
-    
+
      }
    
     const clearData = ()=>{
@@ -81,19 +75,17 @@ function Form() {
     ]
     return (
         <div className='flex flex-col justify-center items-start'>
-            <div className='flex flex-col items-center mb-2 py-2 relative'>
-                <div className='flex items-center justify-start space-x-2'>
-                    <div className='flex items-center justify-center bg-gray-500 rounded'>
-                        <button onClick={
+            <div className='flex flex-col items-center mb-2 py-2 relative '>
+                <div className='flex items-center justify-center space-x-2'>
+                    <div className='flex items-center justify-center rounded animate-bounce '>
+                       <KeyboardDoubleArrowDownIcon onClick={
                                 () => setShowSearch(!showSearch)
-                            }
-                            className='px-2 text-gray-50 text-sm'>
-                            More
-                        </button>
+                            } />
                     </div>
-                    <div className="mt-1 relative rounded-md shadow-sm">
+                    <div className=" relative rounded-md shadow-sm p-1">
+
                         <input 
-                        className ="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-500 rounded-md" 
+                        className ="text-sm focus:outline-none bg-transparent ring-2 ring-gray-100 placeholder-gray-700 w-full pl-7 pr-12 flex-grow" 
                         placeholder="RM"
                         type='text'
                         value={data.rm}
@@ -102,58 +94,40 @@ function Form() {
                         
                         />
                     </div>
+
                     <button 
-                    className='bg-gray-500 rounded text-sm text-white px-2'
+                    className='flex items-center align-center'
                     type="submit" 
                     value="Submit"
                     onClick={(e)=>submit(e)}
-                    
-                    >Submit</button>
+                    > <SearchRoundedIcon /></button>
                 </div>
 
                 <div className={
-                    showSearch ? 'hidden' : 'block space-y-4 text-black absolute top-10'
+                    showSearch ? 'hidden' : 'block space-y-4 text-black absolute top-12 h-20 bg-gray-100 rounded'
                 }>
               
-                    <div className="mt-1 relative rounded-md shadow-sm">
+                    <div className="mt-1 relative rounded-md shadow-sm px-1">
                         <input 
                         type='text'
                         value={data.nama}
                         onChange ={(e)=>setData({...data, nama:e.target.value})}
-                         className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
+                        className ="text-sm focus:outline-none bg-transparent ring-2 ring-gray-100 placeholder-gray-700 w-full pl-7 pr-12 flex-grow"
                           placeholder="NAMA"/>
                     </div>
-                    <div className="mt-1 relative rounded-md shadow-sm">
+                    <div className="mt-1 relative rounded-md shadow-sm px-1">
                         <input 
                         type='text'
                         value={data.namakk}
                         onChange ={(e)=>setData({...data, namakk:e.target.value})}
-                         className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
-                          placeholder="NAMA KK"/>
+                        className ="text-sm focus:outline-none bg-transparent ring-2 ring-gray-100 placeholder-gray-700 w-full pl-7 flex-grow"
+                        placeholder="NAMA KK"/>
                     </div>
 
-                    <div className='mt-2 '>
-                       
-                       <div className="flex items-center">
-                           <label htmlFor ="desa" className="sr-only">ALAMAT</label>
-                           <select 
-                           id="desa"
-                            name="desa" 
-
-                            type='text'
-                            value={data.alamat}
-                            onChange ={(e)=>setData({...data, alamat:e.target.value})}
-
-                            className="focus:ring-indigo-500 focus:border-indigo-500 h-full py-0 pl-2 pr-7 border-transparent bg-white text-gray-500 sm:text-sm rounded-md">
-                           {option.map((x , i)=>(
-                             <option key={i} value={x.value}> {x.label}</option>)
-                           )} 
-                           </select>
-                       </div>
-                   </div>
+                    
                 </div>
             </div>
-            <Table/>
+            
         </div>
 
     )

@@ -1,22 +1,15 @@
 import React, { useContext,  useEffect,  useRef,  useState } from 'react';
-import { Store } from "../components/contex/myContext"
+import { Store } from "./contex/myContext"
 import { useRouter } from 'next/router';
+import CloseIcon from '@mui/icons-material/Close';
 
-function Table() {
+function TableAdd() {
 
     const { addUser, users, removeUsers } = useContext(Store);
     const router = useRouter()
     
     const [b] = users
 
-    console.log(b)
-    console.log("ok")
-
-    const fetchData = async () => {
-        const response = await fetch('/api/customer/customer')
-        const data = await response.json()
-        setDataRe(data)
-    }
   
     const deleteData = async (e, customersId) => {
         e.preventDefault()
@@ -48,33 +41,44 @@ function Table() {
         }
              return (
                   <div className ="flex items-center justify-center">
-                     <div >
-                     <div className='flex space-x-8'>
-                                <p className='px-2 w-40'>RM</p>
-                                <p className='px-2 w-40'>Nama</p>
-                                <p className='px-2 w-40'>Nama KK</p>
-                                <p className='px-2 w-40'>ALAMAT</p>
-                                
-                     </div>           
-                        
+                     <div >         
                         {
                         
                         users.map((customer, index )=> (
-                            <div key={customer._id} className='flex space-x-8 space-y-4'>
-                                <p className='px-2 w-40'>{customer.rm}</p>
-                                <p className='px-2 w-40'>{customer.nama}</p>
-                                <p className='px-2 w-40'>{customer.namakk}</p>
-                                <p className='px-2 w-40'>{customer.alamat}</p>
-                                <div className='px-2 w-40'>
-                                    <button className='bg-gray-500 p-1 rounded' onClick={()=>router.push(`/id/${customer._id}`)}>Details</button>
-                                    <button className='bg-gray-500 p-1 rounded' onClick={(e)=>deleteData(e, customer._id)}>DELETE</button>
+
+                            <div key={customer._id} className='flex flex-col space-x-4 '>
+                                <div className='flex items-center justify-around w-60'>
+                                    <p className ="w-20">RM :</p>    
+                                    <p className=' '>{customer.rm}</p>
                                 </div>
-                    
+                                <div className='flex items-center justify-around w-60'>
+                                    <p className ="w-20">RM :</p>    
+                                    <p className=' '>{customer.rm}</p>
+                                </div>
+                                <div className='flex items-center justify-around w-60'>
+                                    <p className ="w-20">RM :</p>    
+                                    <p className=' '>{customer.rm}</p>
+                                </div>
+                                <div className='flex items-center justify-around w-60'>
+                                    <p className ="w-20">RM :</p>    
+                                    <p className=' '>{customer.rm}</p>
+                                </div>
+                                <div className='flex items-center justify-around w-60'>
+                                    <p className ="w-20">RM :</p>    
+                                    <p className=' '>{customer.rm}</p>
+                                </div>
+                              
+                                <div onClick={(e)=>deleteData(e, customer._id)} className=' w-5'>
+                                   <CloseIcon />
+                                </div>
+                                
                             </div>
+                            
                             ))
                         } 
+                        
                     
                 </div>
                      </div>)}
 
-            export default Table
+            export default TableAdd
