@@ -1,17 +1,12 @@
 import React, { useContext,  useEffect,  useRef,  useState } from 'react';
-import { Store } from "./contex/myContext"
-import { useRouter } from 'next/router';
-import CloseIcon from '@mui/icons-material/Close';
-import TouchAppIcon from '@mui/icons-material/TouchApp';
 
-function TableNew() {
 
-    const { addUser, users, removeUsers } = useContext(Store);
-    const router = useRouter()
-    
-    const [b] = users
+function TableNew({people, searchDesa}) {
 
-  
+console.log(people, searchDesa)
+
+
+
     const deleteData = async (e, customersId) => {
         e.preventDefault()
        if(customersId){
@@ -22,7 +17,6 @@ function TableNew() {
             }
         
         }
-
         async function deleteDataq(url = '', data = {}) {
 
             const response = await fetch(url, {
@@ -43,42 +37,59 @@ function TableNew() {
 
 
   return (
-    <div className=' w-full my-4 py-6'>
+    <div className=''>
        
-        <table class="table-auto w-full">
-            <thead>
-                <tr className='space-y-2'>
-                    <th className='text-center'>RM</th>
-                    <th className='text-center'>NAMA</th>
-                    <th className='text-center'>NAMA KK</th>
-                    <th className='text-center'>ALAMAT</th>
-                    <th className='text-center hidden sm-inline-flex'>RT</th>
-                    <th className='text-center hidden sm-inline-flex'>RT</th>
-                    <th className='text-center'>ACT</th>
-                </tr>
-            </thead>
-            <tbody>
-                { users.map((customer, index )=> ( 
-                <tr className="className='space-y-2" key={index}>
-                                <td  className='text-center'>{customer.rm}</td>
-                                <td  className='text-center'>{customer.nama}</td>
-                                <td  className='text-center'>{customer.namakk}</td>
-                                <td  className='text-center'>{customer.alamat}</td>
-                                <td  className='text-center'>{customer.rt}</td>
-                                <td  className='text-center'>{customer.rw}</td>
-                                <div className='flex items-center justify-center space-x-1'>
-                                <div onClick={(e)=>deleteData(e, customer._id)} className='  cursor-pointer w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center'>
-                                   <CloseIcon />
-                                </div>
-                                <div  onClick={()=>router.push(`/id/${customer._id}`)} className=' cursor-pointer w-5 h-5 rounded-full bg-emerald-500 flex items-center justify-center'>
-                                   <TouchAppIcon />
-                                </div>
-                                </div>
-                            
-                </tr>))}
-                
-            </tbody>
-        </table>
+<table className="table-auto w-full mx-auto">
+  <thead>
+    <tr>
+      <th className="px-4 py-2">RM</th>
+      <th className="px-4 py-2">Nama</th>
+      <th className="px-4 py-2">Nama KK</th>
+      
+      <th className="px-4 py-2">Desa</th>
+      <th className="px-4 py-2">Rt</th>
+      <th className="px-4 py-2">Rw</th>
+      <th className="px-4 py-2">Update</th>
+    </tr>
+  </thead>
+  <tbody>
+
+  {searchDesa.length > 0 ? people?.filter(x=>{
+        const searchItem = searchDesa.toLowerCase()
+        const newDesa = x.desa.toLowerCase()
+        return searchItem ==newDesa}    
+        )
+       .map(person=>(
+       
+        <tr className=" bg-gray-100" key={person._id}>     
+        <td  className='borde px-4 py-2'>{person.rm}</td>
+        <td  className='borde px-4 py-2'>{person.nama}</td>
+        <td  className='borde px-4 py-2'>{person.kk}</td>
+        <td  className='borde px-4 py-2'>{person.desa}</td>
+        <td  className='borde px-4 py-2'>{person.rt}</td>
+        <td  className='borde px-4 py-2'>{person.rw}</td>
+        <td> <button onClick={()=>console.log(person._id)}>Update</button></td>              
+   </tr>
+
+      
+       )):people?.map(person=>(
+       
+        <tr className=" bg-gray-100" key={person._id}>     
+             <td  className='borde px-4 py-2'>{person.rm}</td>
+             <td  className='borde px-4 py-2'>{person.nama}</td>
+             <td  className='borde px-4 py-2'>{person.kk}</td>
+             <td  className='borde px-4 py-2'>{person.desa}</td>
+             <td  className='borde px-4 py-2'>{person.rt}</td>
+             <td  className='borde px-4 py-2'>{person.rw}</td>
+             <td> <button onClick={()=>console.log(person._id)}>Update</button></td>              
+        </tr>
+
+      
+       )) }
+  
+  </tbody>
+</table>   
+         
     </div>
   )
 }

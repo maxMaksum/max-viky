@@ -1,78 +1,43 @@
-import { Store } from "../components/contex/myContext"
+import { Store } from "./contex/myContext"
 import { useContext, useEffect, useState } from 'react'
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useRouter } from 'next/router';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-function Form() {
+const axios = require('axios').default;
+
+function Search() {
 
     const { addUsers, readUsers, users, setUsers } = useContext(Store);
 
     const router = useRouter()
-
-    // console.log(users)
     const [showSearch, setShowSearch] = useState(true)
+
     const [data, setData] = useState({
         rm:"",
         nama:"",
-        namakk:"",
-        alamat:"",
+        namakk:""
 
     })
-  
-    const submit = async (e) => {
 
-        // console.log(data)
 
-    
-         const res = await fetchData(data)
-         
-         console.log(res.products)
-         setUsers(res.products)
-
-       
-        //  console.log(users)
-
+    const Search = async (e) => {
+        e.preventDefault()
+        await fetchSearch()
+        
+      
      }
-   
-    const clearData = ()=>{
-       setData({
-        rm:"",
-        nama:"",
-        namakk:"",
-        alamat:"",
-       })
-    }
 
-    const fetchData = async (x)=>{
-        try {
-        const response = await fetch('/api/customer/customer', {
-                method: 'POST', // or 'PUT'
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(x)
-            })
-        const data =  await response.json()
-
-       
-     
-        return data
-
-    }
-    catch(error) {
-      console.log(error)
-     } 
-}
-
-    let option = [
-      {value : 'SODITAN', label: 'SODITAN'},
-      {value : 'LASEM', label: 'LASEM'},
-      {value : 'ABC', label: 'ABC'},
-      {value : 'LARA', label: 'LARA'}
-    
-    
-    
-    ]
+    const fetchSearch = async()=>{
+        try{
+        const response = await axios.post("/api/customer/customer",{
+           data
+        })
+        console.log(response)  
+      }
+      catch (error) {
+        console.error(error);
+      }
+      }
     return (
         <div className='flex flex-col justify-center items-start'>
             <div className='flex flex-col items-center mb-2 py-2 relative '>
@@ -99,7 +64,7 @@ function Form() {
                     className='flex items-center align-center'
                     type="submit" 
                     value="Submit"
-                    onClick={(e)=>submit(e)}
+                    onClick={(e)=>Search(e)}
                     > <SearchRoundedIcon /></button>
                 </div>
 
@@ -133,4 +98,4 @@ function Form() {
     )
 }
 
-export default Form
+export default Search

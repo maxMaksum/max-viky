@@ -1,0 +1,38 @@
+POST  http://localhost:3000/api/persons HTTP/1.1
+Content-Type : application/json
+
+{
+   
+     "name" : "max18",
+     "desaId":"64231f389ec6c0ce239e213a",
+     "teacherId":"6423b1f4a047bfb6acb8b608",
+     "rt": 1,
+     "rw": 2
+     
+     
+}
+
+###
+
+GET   http://localhost:3000/api/persons HTTP/1.1
+
+###
+
+GET    http://localhost:3000/api/persons/6423eab4a047bfb6acb8b60e HTTP/1.1
+# Content-Type : application/json
+
+###
+PUT    http://localhost:3000/api/persons/6423eab4a047bfb6acb8b60e HTTP/1.1
+Content-Type : application/json
+
+ {
+  "name": "max17",
+ " teacherId": "6423b1f4a047bfb6acb8b608",
+  "desaId": "64231f389ec6c0ce239e213a",
+  "rt": 1,
+  "rw": 2
+  }
+
+###
+DELETE   http://localhost:3000/api/persons/641daa5cc73feab130b3b208 HTTP/1.1
+# Content-Type : application/json
