@@ -1,13 +1,22 @@
 import Head from 'next/head'
 
-import React, {useContext, useEffect, useState} from 'react'
+
 
 // import Search from '../components/Search'
 import Search from '../components/Search/Search'
+import { useEffect, useState } from 'react'
 
 
 
-export default function Home({desas}) {
+export default function Home() {
+
+    const [desas,setDesas] = useState([])
+    useEffect(async()=>{
+        const res = await fetch('/api/desas')
+        const desa = await res.json()
+        setDesas(desa)
+    },[])
+    
         return (
             
             <div  className="">
@@ -25,14 +34,3 @@ export default function Home({desas}) {
         )
     } 
     
-    async function getStaticProps() {
-       
-        const res = await fetch(process.env.URL+'/api/desas')
-        const desas = await res.json()
-    
-        return {
-          props: {
-         desas,
-          },
-        }
-    }
